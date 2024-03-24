@@ -11,6 +11,7 @@ obstacle_speed = 20  # Decreased for easier testing
 obstacles = []
 game_over = False
 obstacle_timer = 0  # Timer to control obstacle generation
+score = 0  # Initialize the score
 
 # Draw the player on the LED matrix
 def draw_player():
@@ -23,7 +24,7 @@ def draw_obstacles():
 
 # Move the obstacles downwards
 def move_obstacles():
-    global game_over
+    global game_over, score
     new_obstacles = []
     for obstacle in obstacles:
         x, y = obstacle
@@ -31,6 +32,8 @@ def move_obstacles():
             if x == player_x:
                 game_over = True
                 return
+            else:
+                score += 1  # Increment score for dodged obstacle
         if y < 4:  # Keep obstacles above player row
             new_obstacles.append((x, y + 1))
     obstacles[:] = new_obstacles
@@ -44,7 +47,7 @@ while not game_over:
     # Clear the display
     display.clear()
 
-    # Draw the player and obstacles
+    # Draw the player, obstacles, and score
     draw_player()
     draw_obstacles()
 
@@ -68,3 +71,4 @@ while not game_over:
 
 # Game over
 display.scroll("Game Over!")
+display.scroll("Score: " + str(score))  # Display the final score
